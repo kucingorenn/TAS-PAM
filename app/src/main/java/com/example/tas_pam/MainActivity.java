@@ -1,30 +1,73 @@
 package com.example.tas_pam;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
 public class MainActivity extends AppCompatActivity {
+
+    private BottomNavigationView bottomNavigationView;
+    private Fragment selectorFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
-    }
 
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                switch (menuItem.getItemId()){
+                    case R.id.nav_home :
+                        selectorFragment = new com.example.tas_pam.Fragments.HomeFragment();
+                        break;
+
+                    case R.id.nav_search :
+                        selectorFragment = new com.example.tas_pam.Fragments.SearchFragment();
+                        break;
+
+                    case R.id.nav_add :
+                        selectorFragment = null;
+                        startActivity(new Intent(com.example.tas_pam.MainActivity.this , com.example.tas_pam.PostActivity.class));
+                        break;
+
+                    case R.id.nav_heart :
+                        selectorFragment = new com.example.tas_pam.Fragments.NotificationFragment();
+                        break;
+
+                    case R.id.nav_profile :
+                        selectorFragment = new com.example.tas_pam.Fragments.ProfileFragment();
+                        break;
+                }
+
+                if (selectorFragment != null){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container , selectorFragment).commit();
+                }
+
+                return  true;
+
+            }
+        });
+
+        Bundle intent = getIntent().getExtras();
+        if (intent != null) {
+            String profileId = intent.getString("publisherId");
+
+            getSharedPreferences("PROFILE", MODE_PRIVATE).edit().putString("profileId", profileId).apply();
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new com.example.tas_pam.Fragments.ProfileFragment()).commit();
+            bottomNavigationView.setSelectedItemId(R.id.nav_profile);
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container , new com.example.tas_pam.Fragments.HomeFragment()).commit();
+        }
+    }
 }
