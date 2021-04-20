@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "251116768919",
+    "project_id": "tas-pam",
+    "storage_bucket": "tas-pam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251116768919:android:aa0f36f1cca7fabac4a3d2",
+        "android_client_info": {
+          "package_name": "com.example.tas_pam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "251116768919-1mcc6uceuvcqi1sqje0kgm5r4v1orm68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJt0NXBTjsz6Wyq03SRD-LhLHMVTNhsb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "251116768919-1mcc6uceuvcqi1sqje0kgm5r4v1orm68.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
