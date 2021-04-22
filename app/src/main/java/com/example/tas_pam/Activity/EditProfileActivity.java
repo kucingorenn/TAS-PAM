@@ -124,6 +124,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         FirebaseDatabase.getInstance().getReference().child("Users")
                 .child(fUser.getUid()).updateChildren(map);
+
+        Toast.makeText(this, "Update Successful", Toast.LENGTH_SHORT).show();
     }
 
     private void uploadImage() {
