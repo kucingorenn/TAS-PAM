@@ -1,4 +1,4 @@
-package com.example.tas_pam;
+package com.example.tas_pam.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.tas_pam.Model.Story;
 import com.example.tas_pam.Model.User;
+import com.example.tas_pam.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

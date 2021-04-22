@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class PhotoAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapter.PhotoAdapter.ViewHolder> {
+public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Post> mPosts;
@@ -30,20 +30,23 @@ public class PhotoAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapt
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.photo_item, parent, false);
-        return  new com.example.tas_pam.Adapter.PhotoAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.photo_item, parent,
+                false);
+        return new PhotoAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         final Post post = mPosts.get(position);
-        Picasso.get().load(post.getImageurl()).placeholder(R.mipmap.ic_launcher).into(holder.postImage);
+        Picasso.get().load(post.getImageurl()).placeholder(R.mipmap.ic_launcher)
+                .into(holder.postImage);
 
         holder.postImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit().putString("postid", post.getPostid()).apply();
+                mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
+                        .edit().putString("postid", post.getPostid()).apply();
 
                 ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, new PostDetailFragment()).commit();

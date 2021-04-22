@@ -1,4 +1,4 @@
-package com.example.tas_pam;
+package com.example.tas_pam.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tas_pam.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class StartActivity extends AppCompatActivity {
@@ -43,7 +44,7 @@ public class StartActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(com.example.tas_pam.StartActivity.this ,
+                startActivity(new Intent(StartActivity.this ,
                         RegisterActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
@@ -52,7 +53,7 @@ public class StartActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(com.example.tas_pam.StartActivity.this ,
+                startActivity(new Intent(StartActivity.this ,
                         LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
                         Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
@@ -87,8 +88,7 @@ public class StartActivity extends AppCompatActivity {
         super.onStart();
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
-            startActivity(new Intent(com.example.tas_pam.StartActivity.this ,
-                    MainActivity.class));
+            startActivity(new Intent(StartActivity.this , MainActivity.class));
             finish();
         }
     }

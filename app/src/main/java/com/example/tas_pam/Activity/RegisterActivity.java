@@ -1,4 +1,4 @@
-package com.example.tas_pam;
+package com.example.tas_pam.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tas_pam.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,8 +58,8 @@ public class RegisterActivity extends AppCompatActivity {
         loginUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(com.example.tas_pam.RegisterActivity.this ,
-                        com.example.tas_pam.LoginActivity.class));
+                startActivity(new Intent(RegisterActivity.this ,
+                        LoginActivity.class));
             }
         });
 
@@ -72,10 +73,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(txtUsername) || TextUtils.isEmpty(txtName)
                     || TextUtils.isEmpty(txtEmail) || TextUtils.isEmpty(txtPassword)){
-                    Toast.makeText(com.example.tas_pam.RegisterActivity.this,
+                    Toast.makeText(RegisterActivity.this,
                             "Empty credentials!", Toast.LENGTH_SHORT).show();
                 } else if (txtPassword.length() < 6){
-                    Toast.makeText(com.example.tas_pam.RegisterActivity.this,
+                    Toast.makeText(RegisterActivity.this,
                             "Password too short!", Toast.LENGTH_SHORT).show();
                 } else {
                     registerUser(txtUsername , txtName , txtEmail , txtPassword);
@@ -87,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser(final String username, final String name, final String email,
                               String password) {
 
-        pd.setMessage("Please Wail!");
+        pd.setMessage("Please Wait!");
         pd.show();
 
         mAuth.createUserWithEmailAndPassword(email , password).addOnSuccessListener
@@ -109,12 +110,12 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
                             pd.dismiss();
-                            Toast.makeText(com.example.tas_pam.RegisterActivity.this,
+                            Toast.makeText(RegisterActivity.this,
                                     "Update the profile " +
                                     "for better expereince", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent
-                                    (com.example.tas_pam.RegisterActivity.this ,
-                                    com.example.tas_pam.MainActivity.class);
+                                    (RegisterActivity.this ,
+                                    MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
                                     Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
@@ -127,8 +128,9 @@ public class RegisterActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                //error
                 pd.dismiss();
-                Toast.makeText(com.example.tas_pam.RegisterActivity.this,
+                Toast.makeText(RegisterActivity.this,
                         e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

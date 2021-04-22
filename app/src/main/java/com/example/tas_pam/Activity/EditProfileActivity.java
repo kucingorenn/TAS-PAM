@@ -1,4 +1,4 @@
-package com.example.tas_pam;
+package com.example.tas_pam.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tas_pam.Model.User;
+import com.example.tas_pam.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -66,10 +68,11 @@ public class EditProfileActivity extends AppCompatActivity {
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         storageRef = FirebaseStorage.getInstance().getReference().child("Uploads");
 
-        FirebaseDatabase.getInstance().getReference().child("Users").child(fUser.getUid()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Users").child(fUser
+                .getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                com.example.tas_pam.Model.User user = dataSnapshot.getValue(com.example.tas_pam.Model.User.class);
+                User user = dataSnapshot.getValue(User.class);
                 fullname.setText(user.getName());
                 username.setText(user.getUsername());
                 bio.setText(user.getBio());
@@ -92,14 +95,16 @@ public class EditProfileActivity extends AppCompatActivity {
         changePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CropImage.activity().setCropShape(CropImageView.CropShape.OVAL).start(com.example.tas_pam.EditProfileActivity.this);
+                CropImage.activity().setCropShape(CropImageView.CropShape.OVAL)
+                        .start(EditProfileActivity.this);
             }
         });
 
         imageProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CropImage.activity().setCropShape(CropImageView.CropShape.OVAL).start(com.example.tas_pam.EditProfileActivity.this);
+                CropImage.activity().setCropShape(CropImageView.CropShape.OVAL)
+                        .start(EditProfileActivity.this);
             }
         });
 
@@ -117,7 +122,8 @@ public class EditProfileActivity extends AppCompatActivity {
         map.put("username", username.getText().toString());
         map.put("bio", bio.getText().toString());
 
-        FirebaseDatabase.getInstance().getReference().child("Users").child(fUser.getUid()).updateChildren(map);
+        FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(fUser.getUid()).updateChildren(map);
     }
 
     private void uploadImage() {
@@ -133,6 +139,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 @Override
                 public Object then(@NonNull Task task) throws Exception {
                     if (!task.isSuccessful()) {
+                        //error
                         throw task.getException();
                     }
 
@@ -145,10 +152,13 @@ public class EditProfileActivity extends AppCompatActivity {
                         Uri downloadUri = task.getResult();
                         String url = downloadUri.toString();
 
-                        FirebaseDatabase.getInstance().getReference().child("Users").child(fUser.getUid()).child("imageurl").setValue(url);
+                        FirebaseDatabase.getInstance().getReference().child("Users")
+                                .child(fUser.getUid()).child("imageurl").setValue(url);
                         pd.dismiss();
                     } else {
-                        Toast.makeText(com.example.tas_pam.EditProfileActivity.this, "Upload failed!", Toast.LENGTH_SHORT).show();
+                        //error
+                        Toast.makeText(EditProfileActivity.this,
+                                "Upload failed!", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -167,6 +177,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             uploadImage();
         } else {
+            //error
             Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
         }
     }

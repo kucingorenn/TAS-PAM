@@ -1,4 +1,4 @@
-package com.example.tas_pam;
+package com.example.tas_pam.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.tas_pam.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class OptionsActivity extends AppCompatActivity {
@@ -38,8 +39,7 @@ public class OptionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(com.example.tas_pam.OptionsActivity.this,
-                        com.example.tas_pam.StartActivity.class)
+                startActivity(new Intent(OptionsActivity.this, StartActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 finish();
             }

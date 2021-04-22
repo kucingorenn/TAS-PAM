@@ -14,7 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tas_pam.Model.Comment;
-import com.example.tas_pam.MainActivity;
+import com.example.tas_pam.Activity.MainActivity;
 import com.example.tas_pam.R;
 import com.example.tas_pam.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,7 +31,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CommentAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapter.CommentAdapter.ViewHolder> {
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Comment> mComments;
@@ -50,7 +50,7 @@ public class CommentAdapter extends RecyclerView.Adapter<com.example.tas_pam.Ada
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.comment_item, parent, false);
-        return new com.example.tas_pam.Adapter.CommentAdapter.ViewHolder(view);
+        return new CommentAdapter.ViewHolder(view);
     }
 
     @Override
@@ -62,7 +62,8 @@ public class CommentAdapter extends RecyclerView.Adapter<com.example.tas_pam.Ada
 
         holder.comment.setText(comment.getComment());
 
-        FirebaseDatabase.getInstance().getReference().child("Users").child(comment.getPublisher()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Users").child(comment.getPublisher())
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
@@ -105,21 +106,26 @@ public class CommentAdapter extends RecyclerView.Adapter<com.example.tas_pam.Ada
                 if (comment.getPublisher().endsWith(fUser.getUid())) {
                     AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
                     alertDialog.setTitle("Do you want to delete?");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "NO", new DialogInterface.OnClickListener() {
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "NO",
+                            new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
                     });
-                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
+                            new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(final DialogInterface dialog, int which) {
                             FirebaseDatabase.getInstance().getReference().child("Comments")
-                                    .child(postId).child(comment.getId()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    .child(postId).child(comment.getId()).removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(mContext, "Comment deleted successfully!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext,
+                                                "Comment deleted successfully!",
+                                                Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
                                     }
                                 }

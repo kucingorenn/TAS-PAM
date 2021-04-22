@@ -1,4 +1,4 @@
-package com.example.tas_pam;
+package com.example.tas_pam.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.tas_pam.Fragments.HomeFragment;
+import com.example.tas_pam.Fragments.NotificationFragment;
+import com.example.tas_pam.Fragments.ProfileFragment;
+import com.example.tas_pam.Fragments.SearchFragment;
+import com.example.tas_pam.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,38 +27,41 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        bottomNavigationView.setOnNavigationItemSelectedListener
+                (new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 switch (menuItem.getItemId()){
                     case R.id.nav_home :
-                        selectorFragment = new com.example.tas_pam.Fragments.HomeFragment();
+                        selectorFragment = new HomeFragment();
                         break;
 
                     case R.id.nav_search :
-                        selectorFragment = new com.example.tas_pam.Fragments.SearchFragment();
+                        selectorFragment = new SearchFragment();
                         break;
 
                     case R.id.nav_add :
                         selectorFragment = null;
-                        startActivity(new Intent(com.example.tas_pam.MainActivity.this , com.example.tas_pam.PostActivity.class));
+                        startActivity(new Intent(MainActivity.this,
+                                PostActivity.class));
                         break;
 
                     case R.id.nav_heart :
-                        selectorFragment = new com.example.tas_pam.Fragments.NotificationFragment();
+                        selectorFragment = new NotificationFragment();
                         break;
 
                     case R.id.nav_profile :
-                        selectorFragment = new com.example.tas_pam.Fragments.ProfileFragment();
+                        selectorFragment = new ProfileFragment();
                         break;
                 }
 
                 if (selectorFragment != null){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container , selectorFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            selectorFragment).commit();
                 }
 
-                return  true;
+                return true;
 
             }
         });
@@ -62,12 +70,15 @@ public class MainActivity extends AppCompatActivity {
         if (intent != null) {
             String profileId = intent.getString("publisherId");
 
-            getSharedPreferences("PROFILE", MODE_PRIVATE).edit().putString("profileId", profileId).apply();
+            getSharedPreferences("PROFILE", MODE_PRIVATE).edit().putString("profileId",
+                    profileId).apply();
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new com.example.tas_pam.Fragments.ProfileFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new ProfileFragment()).commit();
             bottomNavigationView.setSelectedItemId(R.id.nav_profile);
         } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container , new com.example.tas_pam.Fragments.HomeFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container ,
+                    new HomeFragment()).commit();
         }
     }
 }

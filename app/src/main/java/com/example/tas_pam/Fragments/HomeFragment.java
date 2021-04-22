@@ -71,8 +71,10 @@ public class HomeFragment extends Fragment {
 
     private void checkFollowingUsers() {
 
-        FirebaseDatabase.getInstance().getReference().child("Follow").child(FirebaseAuth.getInstance()
-                .getCurrentUser().getUid()).child("following").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Follow")
+                .child(FirebaseAuth.getInstance().getCurrentUser()
+                        .getUid()).child("following")
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 followingList.clear();
@@ -94,7 +96,8 @@ public class HomeFragment extends Fragment {
 
     private void readPosts() {
 
-        FirebaseDatabase.getInstance().getReference().child("Posts").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Posts")
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();

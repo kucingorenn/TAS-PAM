@@ -11,7 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tas_pam.Fragments.PostDetailFragment;
+import com.example.tas_pam.Fragments.ProfileFragment;
 import com.example.tas_pam.Model.Notification;
+import com.example.tas_pam.Model.Post;
+import com.example.tas_pam.Model.User;
 import com.example.tas_pam.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,7 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class NotificationAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapter.NotificationAdapter.ViewHolder> {
+public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Notification> mNotifications;
@@ -36,13 +40,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<com.example.tas_pa
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.notification_item, parent, false);
 
-        return new com.example.tas_pam.Adapter.NotificationAdapter.ViewHolder(view);
+        return new NotificationAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        final com.example.tas_pam.Model.Notification notification = mNotifications.get(position);
+        final Notification notification = mNotifications.get(position);
 
         getUser(holder.imageProfile, holder.username, notification.getUserid());
         holder.comment.setText(notification.getText());
@@ -62,13 +66,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<com.example.tas_pa
                             .edit().putString("postid", notification.getPostid()).apply();
 
                     ((FragmentActivity)mContext).getSupportFragmentManager()
-                            .beginTransaction().replace(R.id.fragment_container, new com.example.tas_pam.Fragments.PostDetailFragment()).commit();
+                            .beginTransaction().replace(R.id.fragment_container,
+                            new PostDetailFragment()).commit();
                 } else {
                     mContext.getSharedPreferences("PROFILE", Context.MODE_PRIVATE)
                             .edit().putString("profileId", notification.getUserid()).apply();
 
                     ((FragmentActivity)mContext).getSupportFragmentManager()
-                            .beginTransaction().replace(R.id.fragment_container, new com.example.tas_pam.Fragments.ProfileFragment()).commit();
+                            .beginTransaction().replace(R.id.fragment_container,
+                            new ProfileFragment()).commit();
                 }
             }
         });
@@ -98,11 +104,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<com.example.tas_pa
     }
 
     private void getPostImage(final ImageView imageView, String postId) {
-        FirebaseDatabase.getInstance().getReference().child("Posts").child(postId).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Posts").child(postId)
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                com.example.tas_pam.Model.Post post = dataSnapshot.getValue(com.example.tas_pam.Model.Post.class);
-                Picasso.get().load(post.getImageurl()).placeholder(R.mipmap.ic_launcher).into(imageView);
+                com.example.tas_pam.Model.Post post = dataSnapshot.getValue(Post.class);
+                Picasso.get().load(post.getImageurl()).placeholder(R.mipmap.ic_launcher)
+                        .into(imageView);
             }
 
             @Override
@@ -113,10 +121,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<com.example.tas_pa
     }
 
     private void getUser(final ImageView imageView, final TextView textView, String userId) {
-        FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Users").child(userId)
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                com.example.tas_pam.Model.User user = dataSnapshot.getValue(com.example.tas_pam.Model.User.class);
+                com.example.tas_pam.Model.User user = dataSnapshot.getValue(User.class);
                 if (user.getImageurl().equals("default")) {
                     imageView.setImageResource(R.mipmap.ic_launcher);
                 } else {

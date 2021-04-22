@@ -121,7 +121,7 @@ public class SearchFragment extends Fragment {
                 if (TextUtils.isEmpty(search_bar.getText().toString())){
                     mUsers.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        com.example.tas_pam.Model.User user = snapshot.getValue(com.example.tas_pam.Model.User.class);
+                        User user = snapshot.getValue(User.class);
                         mUsers.add(user);
                     }
 
@@ -146,7 +146,7 @@ public class SearchFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    com.example.tas_pam.Model.User user = snapshot.getValue(com.example.tas_pam.Model.User.class);
+                    User user = snapshot.getValue(User.class);
                     mUsers.add(user);
                 }
                 userAdapter.notifyDataSetChanged();

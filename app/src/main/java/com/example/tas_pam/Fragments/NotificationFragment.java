@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tas_pam.Adapter.NotificationAdapter;
 import com.example.tas_pam.Model.Notification;
 import com.example.tas_pam.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +26,7 @@ import java.util.List;
 public class NotificationFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private com.example.tas_pam.Adapter.NotificationAdapter notificationAdapter;
+    private NotificationAdapter notificationAdapter;
     private List<Notification> notificationList;
 
     @Override
@@ -37,7 +38,7 @@ public class NotificationFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         notificationList = new ArrayList<>();
-        notificationAdapter = new com.example.tas_pam.Adapter.NotificationAdapter(getContext(), notificationList);
+        notificationAdapter = new NotificationAdapter(getContext(), notificationList);
         recyclerView.setAdapter(notificationAdapter);
 
         readNotifications();
@@ -47,12 +48,14 @@ public class NotificationFragment extends Fragment {
 
     private void readNotifications() {
 
-        FirebaseDatabase.getInstance().getReference().child("Notifications").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Notifications")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                    notificationList.add(snapshot.getValue(com.example.tas_pam.Model.Notification.class));
+                    notificationList.add(snapshot.getValue(Notification.class));
                 }
 
                 Collections.reverse(notificationList);

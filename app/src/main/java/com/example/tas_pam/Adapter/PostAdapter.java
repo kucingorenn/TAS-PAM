@@ -12,7 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tas_pam.Activity.CommentActivity;
+import com.example.tas_pam.Activity.FollowersActivity;
 import com.example.tas_pam.Model.Post;
+import com.example.tas_pam.Model.User;
 import com.example.tas_pam.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +29,7 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.List;
 
-public class PostAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapter.PostAdapter.Viewholder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Viewholder> {
 
     private Context mContext;
     private List<Post> mPosts;
@@ -42,8 +45,9 @@ public class PostAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapte
     @NonNull
     @Override
     public Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.post_item, parent, false);
-        return new com.example.tas_pam.Adapter.PostAdapter.Viewholder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.post_item, parent,
+                false);
+        return new PostAdapter.Viewholder(view);
     }
 
     @Override
@@ -53,15 +57,17 @@ public class PostAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapte
         Picasso.get().load(post.getImageurl()).into(holder.postImage);
         holder.description.setText(post.getDescription());
 
-        FirebaseDatabase.getInstance().getReference().child("Users").child(post.getPublisher()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Users").child(post
+                .getPublisher()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                com.example.tas_pam.Model.User user = dataSnapshot.getValue(com.example.tas_pam.Model.User.class);
+                com.example.tas_pam.Model.User user = dataSnapshot.getValue(User.class);
 
                 if (user.getImageurl().equals("default")) {
                     holder.imageProfile.setImageResource(R.mipmap.ic_launcher);
                 } else {
-                    Picasso.get().load(user.getImageurl()).placeholder(R.mipmap.ic_launcher).into(holder.imageProfile);
+                    Picasso.get().load(user.getImageurl()).placeholder(R.mipmap.ic_launcher)
+                            .into(holder.imageProfile);
                 }
                 holder.username.setText(user.getUsername());
                 holder.author.setText(user.getName());
@@ -96,7 +102,7 @@ public class PostAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapte
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, com.example.tas_pam.CommentActivity.class);
+                Intent intent = new Intent(mContext, CommentActivity.class);
                 intent.putExtra("postId", post.getPostid());
                 intent.putExtra("authorId", post.getPublisher());
                 mContext.startActivity(intent);
@@ -106,7 +112,7 @@ public class PostAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapte
         holder.noOfComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, com.example.tas_pam.CommentActivity.class);
+                Intent intent = new Intent(mContext, CommentActivity.class);
                 intent.putExtra("postId", post.getPostid());
                 intent.putExtra("authorId", post.getPublisher());
                 mContext.startActivity(intent);
@@ -172,7 +178,7 @@ public class PostAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapte
         holder.noOfLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, com.example.tas_pam.FollowersActivity.class);
+                Intent intent = new Intent(mContext, FollowersActivity.class);
                 intent.putExtra("id", post.getPublisher());
                 intent.putExtra("title", "likes");
                 mContext.startActivity(intent);

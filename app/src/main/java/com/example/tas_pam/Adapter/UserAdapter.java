@@ -12,7 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tas_pam.MainActivity;
+import com.example.tas_pam.Fragments.ProfileFragment;
+import com.example.tas_pam.Activity.MainActivity;
 import com.example.tas_pam.R;
 import com.example.tas_pam.Model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +30,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapter.UserAdapter.ViewHolder>{
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     private Context mContext;
     private List<User> mUsers;
@@ -46,8 +47,9 @@ public class UserAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.user_item , parent , false);
-        return new com.example.tas_pam.Adapter.UserAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.user_item , parent,
+                false);
+        return new UserAdapter.ViewHolder(view);
     }
 
     @Override
@@ -61,7 +63,8 @@ public class UserAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapte
         holder.username.setText(user.getUsername());
         holder.fullname.setText(user.getName());
 
-        Picasso.get().load(user.getImageurl()).placeholder(R.mipmap.ic_launcher).into(holder.imageProfile);
+        Picasso.get().load(user.getImageurl()).placeholder(R.mipmap.ic_launcher)
+                .into(holder.imageProfile);
 
         isFollowed(user.getId() , holder.btnFollow);
 
@@ -74,18 +77,22 @@ public class UserAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapte
             public void onClick(View v) {
                 if (holder.btnFollow.getText().toString().equals(("follow"))){
                     FirebaseDatabase.getInstance().getReference().child("Follow").
-                            child((firebaseUser.getUid())).child("following").child(user.getId()).setValue(true);
+                            child((firebaseUser.getUid())).child("following")
+                            .child(user.getId()).setValue(true);
 
                     FirebaseDatabase.getInstance().getReference().child("Follow").
-                            child(user.getId()).child("followers").child(firebaseUser.getUid()).setValue(true);
+                            child(user.getId()).child("followers")
+                            .child(firebaseUser.getUid()).setValue(true);
 
                     addNotification(user.getId());
                 } else {
                     FirebaseDatabase.getInstance().getReference().child("Follow").
-                            child((firebaseUser.getUid())).child("following").child(user.getId()).removeValue();
+                            child((firebaseUser.getUid()))
+                            .child("following").child(user.getId()).removeValue();
 
                     FirebaseDatabase.getInstance().getReference().child("Follow").
-                            child(user.getId()).child("followers").child(firebaseUser.getUid()).removeValue();
+                            child(user.getId()).child("followers")
+                            .child(firebaseUser.getUid()).removeValue();
                 }
             }
         });
@@ -94,9 +101,11 @@ public class UserAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapte
             @Override
             public void onClick(View v) {
                 if (isFargment) {
-                    mContext.getSharedPreferences("PROFILE", Context.MODE_PRIVATE).edit().putString("profileId", user.getId()).apply();
+                    mContext.getSharedPreferences("PROFILE", Context.MODE_PRIVATE)
+                            .edit().putString("profileId", user.getId()).apply();
 
-                    ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new com.example.tas_pam.Fragments.ProfileFragment()).commit();
+                    ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, new ProfileFragment()).commit();
                 } else {
                     Intent intent = new Intent(mContext, MainActivity.class);
                     intent.putExtra("publisherId", user.getId());
@@ -109,8 +118,8 @@ public class UserAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapte
 
     private void isFollowed(final String id, final Button btnFollow) {
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid())
-                .child("following");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                .child("Follow").child(firebaseUser.getUid()).child("following");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -158,7 +167,8 @@ public class UserAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapte
         map.put("postid", "");
         map.put("isPost", false);
 
-        FirebaseDatabase.getInstance().getReference().child("Notifications").child(firebaseUser.getUid()).push().setValue(map);
+        FirebaseDatabase.getInstance().getReference().child("Notifications")
+                .child(firebaseUser.getUid()).push().setValue(map);
     }
 
 }

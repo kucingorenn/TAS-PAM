@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,20 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.tas_pam.AddStoryActivity;
-import com.example.tas_pam.Model.Comment;
+import com.example.tas_pam.Activity.AddStoryActivity;
 import com.example.tas_pam.Model.Story;
 import com.example.tas_pam.Model.User;
 import com.example.tas_pam.R;
-import com.example.tas_pam.StoryActivity;
-import com.google.firebase.FirebaseApiNotAvailableException;
+import com.example.tas_pam.Activity.StoryActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -46,10 +42,12 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType==0){
-            View view = LayoutInflater.from(mContext).inflate(R.layout.add_story_item, parent, false);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.add_story_item, parent,
+                    false);
             return new StoryAdapter.ViewHolder(view);
         } else {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.story_item, parent, false);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.story_item, parent,
+                    false);
             return new StoryAdapter.ViewHolder(view);
         }
     }
@@ -113,7 +111,8 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
     }
 
     private void userInfo(final ViewHolder viewHolder, String userid, final int pos){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("Users").child(userid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -195,7 +194,8 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
     }
 
     private void seenStory(ViewHolder viewHolder, String userid){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story").child(userid);
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("Story").child(userid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

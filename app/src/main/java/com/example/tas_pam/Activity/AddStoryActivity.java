@@ -1,4 +1,4 @@
-package com.example.tas_pam;
+package com.example.tas_pam.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
+import com.example.tas_pam.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -66,6 +67,7 @@ public class AddStoryActivity extends AppCompatActivity {
                 @Override
                 public Object then(@NonNull Task task) throws Exception {
                     if(!task.isSuccessful()){
+                        //error
                         throw task.getException();
                     }
 
@@ -98,6 +100,7 @@ public class AddStoryActivity extends AppCompatActivity {
 
                         finish();
                     } else {
+                        //error
                         Toast.makeText(AddStoryActivity.this, "Failed" ,
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -124,6 +127,7 @@ public class AddStoryActivity extends AppCompatActivity {
 
             publishStory();
         } else {
+            //error
             Toast.makeText(this, "Something gone wrong!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(AddStoryActivity.this, MainActivity.class ));
             finish();

@@ -1,4 +1,4 @@
-package com.example.tas_pam;
+package com.example.tas_pam.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tas_pam.Adapter.CommentAdapter;
 import com.example.tas_pam.Model.Comment;
+import com.example.tas_pam.Model.User;
+import com.example.tas_pam.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CommentActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private com.example.tas_pam.Adapter.CommentAdapter commentAdapter;
+    private CommentAdapter commentAdapter;
     private List<Comment> commentList;
 
     private EditText addComment;
@@ -72,7 +75,7 @@ public class CommentActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         commentList = new ArrayList<>();
-        commentAdapter = new com.example.tas_pam.Adapter.CommentAdapter(this, commentList, postId);
+        commentAdapter = new CommentAdapter(this, commentList, postId);
 
         recyclerView.setAdapter(commentAdapter);
 
@@ -88,7 +91,7 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(addComment.getText().toString())) {
-                    Toast.makeText(com.example.tas_pam.CommentActivity.this, "No comment added!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CommentActivity.this, "No comment added!", Toast.LENGTH_SHORT).show();
                 } else {
                     putComment();
                 }
@@ -139,9 +142,10 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(com.example.tas_pam.CommentActivity.this, "Comment added!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CommentActivity.this, "Comment added!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(com.example.tas_pam.CommentActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    //error
+                    Toast.makeText(CommentActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -153,7 +157,7 @@ public class CommentActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference().child("Users").child(fUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                com.example.tas_pam.Model.User user = dataSnapshot.getValue(com.example.tas_pam.Model.User.class);
+                com.example.tas_pam.Model.User user = dataSnapshot.getValue(User.class);
                 if (user.getImageurl().equals("default")) {
                     imageProfile.setImageResource(R.mipmap.ic_launcher);
                 } else {

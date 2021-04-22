@@ -1,4 +1,4 @@
-package com.example.tas_pam;
+package com.example.tas_pam.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tas_pam.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -59,7 +60,7 @@ public class PostActivity extends AppCompatActivity {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(com.example.tas_pam.PostActivity.this , MainActivity.class));
+                startActivity(new Intent(PostActivity.this , MainActivity.class));
                 finish();
             }
         });
@@ -71,7 +72,7 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        CropImage.activity().start(com.example.tas_pam.PostActivity.this);
+        CropImage.activity().start(PostActivity.this);
     }
 
     private void upload() {
@@ -81,13 +82,16 @@ public class PostActivity extends AppCompatActivity {
         pd.show();
 
         if (imageUri != null){
-            final StorageReference filePath = FirebaseStorage.getInstance().getReference("Posts").child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+            final StorageReference filePath = FirebaseStorage.getInstance()
+                    .getReference("Posts").child(System.currentTimeMillis() +
+                            "." + getFileExtension(imageUri));
 
             StorageTask uploadtask = filePath.putFile(imageUri);
             uploadtask.continueWithTask(new Continuation() {
                 @Override
                 public Object then(@NonNull Task task) throws Exception {
                     if (!task.isSuccessful()){
+                        //error
                         throw task.getException();
                     }
 
@@ -99,7 +103,8 @@ public class PostActivity extends AppCompatActivity {
                     Uri downloadUri = task.getResult();
                     imageUrl = downloadUri.toString();
 
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+                    DatabaseReference ref = FirebaseDatabase.getInstance()
+                            .getReference("Posts");
                     String postId = ref.push().getKey();
 
                     HashMap<String, Object> map = new HashMap<>();
@@ -110,7 +115,8 @@ public class PostActivity extends AppCompatActivity {
 
                     ref.child(postId).setValue(map);
 
-                    DatabaseReference mHashTagRef = FirebaseDatabase.getInstance().getReference().child("HashTags");
+                    DatabaseReference mHashTagRef = FirebaseDatabase.getInstance()
+                            .getReference().child("HashTags");
                     List<String> hashTags = description.getHashtags();
                     if (!hashTags.isEmpty()){
                         for (String tag : hashTags){
@@ -124,13 +130,15 @@ public class PostActivity extends AppCompatActivity {
                     }
 
                     pd.dismiss();
-                    startActivity(new Intent(com.example.tas_pam.PostActivity.this , MainActivity.class));
+                    startActivity(new Intent(PostActivity.this , MainActivity.class));
                     finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(com.example.tas_pam.PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    //error
+                    Toast.makeText(PostActivity.this, e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -141,7 +149,8 @@ public class PostActivity extends AppCompatActivity {
 
     private String getFileExtension(Uri uri) {
 
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(this.getContentResolver().getType(uri));
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(this
+                .getContentResolver().getType(uri));
 
     }
 
@@ -155,8 +164,9 @@ public class PostActivity extends AppCompatActivity {
 
             imageAdded.setImageURI(imageUri);
         } else {
+            //error
             Toast.makeText(this, "Try again!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(com.example.tas_pam.PostActivity.this , MainActivity.class));
+            startActivity(new Intent(PostActivity.this , MainActivity.class));
             finish();
         }
     }
@@ -165,13 +175,16 @@ public class PostActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        final ArrayAdapter<Hashtag> hashtagAdapter = new HashtagArrayAdapter<>(getApplicationContext());
+        final ArrayAdapter<Hashtag> hashtagAdapter = new
+                HashtagArrayAdapter<>(getApplicationContext());
 
-        FirebaseDatabase.getInstance().getReference().child("HashTags").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("HashTags")
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    hashtagAdapter.add(new Hashtag(snapshot.getKey() , (int) snapshot.getChildrenCount()));
+                    hashtagAdapter.add(new Hashtag(snapshot.getKey() ,
+                            (int) snapshot.getChildrenCount()));
                 }
             }
 

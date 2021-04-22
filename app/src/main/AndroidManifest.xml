@@ -12,17 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StoryActivity"></activity>
-        <activity android:name=".AddStoryActivity" />
-        <activity android:name=".OptionsActivity" />
-        <activity android:name=".FollowersActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".CommentActivity" />
-        <activity android:name=".PostActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".StartActivity">
+        <activity android:name=".Activity.StoryActivity"></activity>
+        <activity android:name=".Activity.AddStoryActivity" />
+        <activity android:name=".Activity.OptionsActivity" />
+        <activity android:name=".Activity.FollowersActivity" />
+        <activity android:name=".Activity.EditProfileActivity" />
+        <activity android:name=".Activity.CommentActivity" />
+        <activity android:name=".Activity.PostActivity" />
+        <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".Activity.RegisterActivity" />
+        <activity android:name=".Activity.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

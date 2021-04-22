@@ -1,4 +1,4 @@
-package com.example.tas_pam;
+package com.example.tas_pam.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tas_pam.Adapter.UserAdapter;
 import com.example.tas_pam.Model.User;
+import com.example.tas_pam.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,7 +29,7 @@ public class FollowersActivity extends AppCompatActivity {
     private List<String> idList;
 
     private RecyclerView recyclerView;
-    private com.example.tas_pam.Adapter.UserAdapter userAdapter;
+    private UserAdapter userAdapter;
     private List<User> mUsers;
 
     @Override
@@ -55,7 +57,7 @@ public class FollowersActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mUsers = new ArrayList<>();
-        userAdapter = new com.example.tas_pam.Adapter.UserAdapter(this, mUsers, false);
+        userAdapter = new UserAdapter(this, mUsers, false);
         recyclerView.setAdapter(userAdapter);
 
         idList = new ArrayList<>();
@@ -77,7 +79,8 @@ public class FollowersActivity extends AppCompatActivity {
 
     private void getFollowers() {
 
-        FirebaseDatabase.getInstance().getReference().child("Follow").child(id).child("followers").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Follow").child(id)
+                .child("followers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 idList.clear();
@@ -98,7 +101,8 @@ public class FollowersActivity extends AppCompatActivity {
 
     private void getFollowings() {
 
-        FirebaseDatabase.getInstance().getReference().child("Follow").child(id).child("following").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Follow").child(id)
+                .child("following").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 idList.clear();
@@ -119,7 +123,8 @@ public class FollowersActivity extends AppCompatActivity {
 
     private void getLikes() {
 
-        FirebaseDatabase.getInstance().getReference().child("Likes").child(id).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Likes").child(id)
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 idList.clear();
@@ -141,12 +146,13 @@ public class FollowersActivity extends AppCompatActivity {
 
     private void showUsers() {
 
-        FirebaseDatabase.getInstance().getReference().child("Users").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Users")
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    com.example.tas_pam.Model.User user = snapshot.getValue(com.example.tas_pam.Model.User.class);
+                    User user = snapshot.getValue(User.class);
 
                     for (String id : idList) {
                         if (user.getId().equals(id)) {

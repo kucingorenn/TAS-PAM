@@ -13,7 +13,7 @@ import com.example.tas_pam.R;
 
 import java.util.List;
 
-public class TagAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapter.TagAdapter.ViewHolder>{
+public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder>{
 
     private Context mContext;
     private List<String> mTags;
@@ -28,9 +28,10 @@ public class TagAdapter extends RecyclerView.Adapter<com.example.tas_pam.Adapter
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.tag_item , parent , false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.tag_item , parent ,
+                false);
 
-        return new com.example.tas_pam.Adapter.TagAdapter.ViewHolder(view);
+        return new TagAdapter.ViewHolder(view);
     }
 
     @Override
