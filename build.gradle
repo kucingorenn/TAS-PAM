@@ -20,7 +20,7 @@ plugins {
 
 sonar {
   properties {
-    property "sonar.projectKey", "kucingorenn_TAS-PAM_AYyA5j_EMJaedr_CU3ig"
+    property "sonar.projectKey", "kucingorenn_TAS-PAM_AYyM582ZpGG4Xcao3khz"
     property "sonar.projectName", "TAS-PAM"
   }
 }
